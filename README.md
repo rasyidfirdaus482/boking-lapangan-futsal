@@ -58,20 +58,17 @@ And of course Dillinger itself is open source with a [public repository][dill]
 
 aplikasi ini menggunakan [php](https://www.php.net/releases/8.0/en.php) Version 8.2.12 .
 
-Install the dependencies and devDependencies and start the server.
+clone repository dengan terminal.
 
 ```sh
-cd dillinger
-npm i
-node app
+git clone https://github.com/rasyidfirdaus482/boking-lapangan-futsal.git
 ```
 
-For production environments...
+buat database dengan nama booking
 
-```sh
-npm install --production
-NODE_ENV=production node app
-```
+- [x] #739
+- [ ] https://github.com/octo-org/octo-repo/issues/740
+- [ ] Add delight to the experience when all tasks are complete :tada:
 
 
 ## Struktur File

@@ -5,23 +5,11 @@ if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'admin') {
     exit();
 }
 
+include 'includes/db_connection.php';
 
-include 'includes/db_connection.php'; // Sertakan file koneksi database\
- // Sertakan file koneksi database\
+date_default_timezone_set("Asia/Jakarta");
+$tanggal_sekarang = date("Y-m-d"); // Change format to match the database format
 
- 
-// $lama = 5; // lama data yang tersimpan di database dan akan otomatis terhapus setelah 5 hari
- 
-// // proses untuk melakukan penghapusan data
- 
-// $query = "DELETE FROM bookingan
-//           WHERE DATEDIFF(CURDATE(), tanggal) > $lama";
-// $hasil = mysqli_query($conn,$query);
-// Cek tanggal sekarang
-date_default_timezone_set("Asia/jakarta");
-$tanggal_sekarang = date("d-m-Y");
-
-// Cek apakah tanggal bookingan sudah lewat
 $sql_cek_booking = "SELECT * FROM bookingan WHERE tanggal < ?";
 $stmt_cek_booking = $conn->prepare($sql_cek_booking);
 $stmt_cek_booking->bind_param("s", $tanggal_sekarang);
@@ -29,15 +17,13 @@ $stmt_cek_booking->execute();
 $result_cek_booking = $stmt_cek_booking->get_result();
 
 while ($row_cek_booking = $result_cek_booking->fetch_assoc()) {
-  // Hapus bookingan yang sudah lewat
-  $sql_hapus_booking = "DELETE FROM bookingan WHERE id = ?";
-  $stmt_hapus_booking = $conn->prepare($sql_hapus_booking);
-  $stmt_hapus_booking->bind_param("i", $row_cek_booking['id']);
-  $stmt_hapus_booking->execute();
-  $stmt_hapus_booking->close();
+    $sql_hapus_booking = "DELETE FROM bookingan WHERE id = ?";
+    $stmt_hapus_booking = $conn->prepare($sql_hapus_booking);
+    $stmt_hapus_booking->bind_param("i", $row_cek_booking['id']);
+    $stmt_hapus_booking->execute();
+    $stmt_hapus_booking->close();
 }
 
-// Hapus booking jika ID booking dikirimkan melalui parameter URL 'hapus'
 if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET['hapus'])) {
     $hapus_id = $_GET['hapus'];
     $sql_hapus_booking = "DELETE FROM bookingan WHERE id = ?";
@@ -45,21 +31,17 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET['hapus'])) {
     $stmt_hapus_booking->bind_param("i", $hapus_id);
     $stmt_hapus_booking->execute();
     $stmt_hapus_booking->close();
-    header("Location: halamanadmin.php"); // Redirect kembali ke halaman admin setelah penghapusan
+    header("Location: halamanadmin.php");
     exit();
 }
-  
-// Cek apakah tombol logout ditekan
+
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['logout'])) {
-    // Hapus semua data sesi
     session_unset();
     session_destroy();
-    header("Location: index.php"); // Redirect ke halaman utama setelah logout
+    header("Location: index.php");
     exit();
 }
 
-
-// Query untuk mendapatkan semua informasi lapangan dan booking beserta nama pengguna
 $sql_get_all_bookings = "SELECT bookingan.*, users.username AS nama_pemesan
                          FROM bookingan
                          INNER JOIN users ON bookingan.user_id = users.id";
@@ -250,7 +232,50 @@ if(!empty($_GET['modul']))
                     <?php endwhile; ?>
                 </tbody>
             </table>
+            <script>
+            $(document).ready(function() {
+                $('.delete-booking-btn').on('click', function() {
+                    var bookingId = $(this).closest('tr').find('.booking-id').text();
 
+                    Swal.fire({
+                        title: 'Are you sure?',
+                        text: 'You won\'t be able to revert this!',
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: '#3085d6',
+                        cancelButtonColor: '#d33',
+                        confirmButtonText: 'Yes, delete it!'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            $.ajax({
+                                type: 'POST',
+                                url: 'delete_booking.php',
+                                data: {
+                                    booking_id: bookingId
+                                },
+                                success: function(response) {
+                                    Swal.fire(
+                                        'Deleted!',
+                                        'Booking has been deleted.',
+                                        'success'
+                                    ).then(() => {
+                                        location.reload();
+                                    });
+                                },
+                                error: function(error) {
+                                    console.error('Error deleting booking:', error);
+                                    Swal.fire(
+                                        'Error!',
+                                        'An error occurred while deleting the booking.',
+                                        'error'
+                                    );
+                                }
+                            });
+                        }
+                    });
+                });
+            });
+            </script>
 
             <?php else: ?>
             <p>Tidak ada data pemesanan lapangan.</p>

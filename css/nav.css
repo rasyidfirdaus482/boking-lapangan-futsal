@@ -1,0 +1,67 @@
+header {
+  background-color: #fff;
+  /* padding: 30px; */
+  border-radius: 10px;
+  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+  height: 60px;
+  position: fixed;
+  top: 0;
+  width: 100%;
+}
+nav {
+  float: right;
+  padding: 10px;
+  z-index: 1;
+}
+
+nav li {
+  display: inline-block;
+  margin-right: 5px;
+  text-transform: capitalize;
+}
+.my-menu li {
+  position: relative;
+}
+
+nav li a {
+  text-decoration: none;
+  color: #333;
+  font-size: 16px;
+  padding: 9px 15px;
+  border-radius: 5px;
+  background-color: #f0fff4;
+  border: 1px solid #45a049;
+  box-shadow: #45a049;
+  transition: all 0.1s ease-in-out;
+}
+
+nav li a:hover {
+  border-color: linear-gradient(
+    to right,
+    #45a049,
+    #4591a0,
+    #d4fb46
+  ); /* Warna gradient saat hover */
+  color: white;
+}
+
+nav li form {
+  display: inline-block;
+}
+
+nav li input[type="submit"] {
+  background-color: #f44336; /* Warna merah */
+  color: white;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+nav li input[type="submit"]:hover {
+  background-color: #ea5455; /* Warna merah lebih gelap saat hover */
+}
+
+nav li a:hover {
+  color: #4caf50;
+}

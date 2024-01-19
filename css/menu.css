@@ -1,0 +1,30 @@
+ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  text-align: center;
+  background-color: rgb(237, 234, 234);
+  position: fixed;
+  width: 100%;
+}
+
+li {
+  display: inline-block;
+  margin-right: 20px;
+}
+
+a {
+  text-decoration: none;
+  color: #333;
+  font-weight: bold;
+  font-size: 16px;
+}
+span {
+  width: 100px;
+  display: block;
+  text-align: center;
+}
+ul {
+  margin-top: 50px;
+  margin-bottom: 50px;
+}

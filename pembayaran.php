@@ -18,22 +18,37 @@ $stmt_get_user_bookings->bind_param("i", $user_id);
 $stmt_get_user_bookings->execute();
 $result_user_bookings = $stmt_get_user_bookings->get_result();
 
-// Ambil informasi harga per jam (misalnya, dari tabel lapangan)
-$id_lapangan = 1; // Ganti dengan ID lapangan yang sesuai
-$sql_get_harga_per_jam = "SELECT harga_per_jam FROM lapangan WHERE id = ?";
-$stmt_get_harga_per_jam = $conn->prepare($sql_get_harga_per_jam);
-$stmt_get_harga_per_jam->bind_param("i", $id_lapangan);
-$stmt_get_harga_per_jam->execute();
-$result_harga_per_jam = $stmt_get_harga_per_jam->get_result();
+// // Query untuk mendapatkan harga per jam lapangan siang
+// $sql_get_harga_per_jam_siang = "SELECT harga_per_jam FROM lapangan WHERE nama_lapangan = 'siang'";
+// $stmt_get_harga_per_jam_siang = $conn->prepare($sql_get_harga_per_jam_siang);
+// $stmt_get_harga_per_jam_siang->execute();
+// $result_harga_per_jam_siang = $stmt_get_harga_per_jam_siang->get_result();
 
-if ($result_harga_per_jam->num_rows == 1) {
-    $row_harga_per_jam = $result_harga_per_jam->fetch_assoc();
-    $harga_per_jam = $row_harga_per_jam['harga_per_jam']; // Ambil nilai harga per jam dari database
-} else {
-    // Tindakan jika harga per jam tidak ditemukan
-    $harga_per_jam = 0; // Atur nilai default jika tidak ditemukan
-}
-$stmt_get_harga_per_jam->close();
+// // Ambil harga per jam lapangan siang
+// if ($result_harga_per_jam_siang->num_rows == 1) {
+//     $row_harga_per_jam_siang = $result_harga_per_jam_siang->fetch_assoc();
+//     $harga_per_jam_siang = $row_harga_per_jam_siang['harga_per_jam']; // Ambil nilai harga per jam dari database
+// } else {
+//     // Tindakan jika harga per jam tidak ditemukan
+//     $harga_per_jam_siang = 0; // Atur nilai default jika tidak ditemukan
+// }
+// $stmt_get_harga_per_jam_siang->close();
+
+// // Query untuk mendapatkan harga per jam lapangan malam
+// $sql_get_harga_per_jam_malam = "SELECT harga_per_jam FROM lapangan WHERE nama_lapangan = 'malam'";
+// $stmt_get_harga_per_jam_malam = $conn->prepare($sql_get_harga_per_jam_malam);
+// $stmt_get_harga_per_jam_malam->execute();
+// $result_harga_per_jam_malam = $stmt_get_harga_per_jam_malam->get_result();
+
+// // Ambil harga per jam lapangan malam
+// if ($result_harga_per_jam_malam->num_rows == 1) {
+//     $row_harga_per_jam_malam = $result_harga_per_jam_malam->fetch_assoc();
+//     $harga_per_jam_malam = $row_harga_per_jam_malam['harga_per_jam']; // Ambil nilai harga per jam dari database
+// } else {
+//     // Tindakan jika harga per jam tidak ditemukan
+//     $harga_per_jam_malam = 0; // Atur nilai default jika tidak ditemukan
+// }
+// $stmt_get_harga_per_jam_malam->close();
 
 ?>
 
@@ -96,10 +111,7 @@ $stmt_get_harga_per_jam->close();
                     <?php
                         $no = 1;
                         while ($row = $result_user_bookings->fetch_assoc()):
-                            $jam_mulai = strtotime($row['jam_mulai']);
-                            $jam_selesai = strtotime($row['jam_selesai']);
-                            $durasi = ($jam_selesai - $jam_mulai) / (60 * 60);
-                            $total_harga = $durasi * $harga_per_jam;
+                            
                         ?>
                     <tr>
                         <td><?php echo $no++; ?></td>
@@ -107,7 +119,7 @@ $stmt_get_harga_per_jam->close();
                             <?php echo 'Tanggal :'. '<b>'. $row['tanggal'] .'</b>'. '<br>' . 'Jam mulai :'.'<b>'. $row['jam_mulai'].'</b>' . '<br>' . 'jam selesai :'.'<b>'. $row['jam_selesai'] .'</b>'. '<br>' .'lapangan :'.'<b>'. $row['jenis_lapangan'].'</b>' ;?>
                         </td>
                         <td><?php echo  $row['status_bayar']; ?></td>
-                        <td><?php echo 'Rp ' . number_format($total_harga, 0, ',', '.'); ?></td>
+                        <td>Rp <?php echo number_format($row['total_harga'], 0, ',', '.'); ?></td>
                         <td>
                             <?php if ($row['bukti_pembayaran']): ?>
                             <span>Sudah diupload</span>

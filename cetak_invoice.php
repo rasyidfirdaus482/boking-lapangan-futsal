@@ -29,30 +29,13 @@ if (isset($_GET['id'])) {
         $jam_mulai = $row_booking_details['jam_mulai'];
         $jam_selesai = $row_booking_details['jam_selesai'];
         $jenis_lapangan = $row_booking_details['jenis_lapangan'];
+        $total_harga = $row_booking_details['total_harga'];
         
         // Perhatikan kolom yang digunakan untuk mendapatkan ID lapangan
         $lapangan_id = $row_booking_details['id']; // Sesuaikan dengan kolom yang sesuai
     
-        // Ambil harga per jam dari database
-        $id_lapangan = 1; // Ganti dengan ID lapangan yang sesuai
-        $sql_get_harga_per_jam = "SELECT harga_per_jam FROM lapangan WHERE id = ?";
-        $stmt_get_harga_per_jam = $conn->prepare($sql_get_harga_per_jam);
-        $stmt_get_harga_per_jam->bind_param("i", $id_lapangan);
-        $stmt_get_harga_per_jam->execute();
-        $result_harga_per_jam = $stmt_get_harga_per_jam->get_result();
+       
         
-        if ($result_harga_per_jam->num_rows == 1) {
-            $row_harga_per_jam = $result_harga_per_jam->fetch_assoc();
-            $harga_per_jam = $row_harga_per_jam['harga_per_jam']; // Ambil nilai harga per jam dari database
-        } else {
-            // Tindakan jika harga per jam tidak ditemukan
-            $harga_per_jam = 0; // Atur nilai default jika tidak ditemukan
-        }
-        $stmt_get_harga_per_jam->close();
-    
-        // Hitung total harga
-        $durasi = (strtotime($jam_selesai) - strtotime($jam_mulai)) / (60 * 60);
-        $total_harga = $durasi * $harga_per_jam;
 
    
 // Buat objek TCPDF

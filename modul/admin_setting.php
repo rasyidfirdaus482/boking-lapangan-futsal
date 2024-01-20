@@ -1,3 +1,23 @@
+<?php
+include 'includes/db_connection.php';  // Sertakan file koneksi database
+
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $harga_per_jam = $_POST['harga_per_jam'];
+    $lapangan_id = $_POST['nama_lapangan']; // Ambil nilai lapangan_id dari formulir
+
+    // Query untuk menyimpan harga per jam ke dalam database
+    $sql_update_harga = "UPDATE lapangan SET harga_per_jam = ? WHERE nama_lapangan = ?";
+    $stmt_update_harga = $conn->prepare($sql_update_harga);
+    $stmt_update_harga->bind_param("is", $harga_per_jam, $lapangan_id);
+
+
+    $stmt_update_harga->execute();
+    $stmt_update_harga->close();
+
+    header("Location: halamanadmin.php?modul=admin_setting"); // Redirect kembali ke halaman admin setting
+    exit();
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -21,14 +41,15 @@
         <h1>Admin Setting</h1>
         <br>
         <h3>Edit harga</h3>
-        <form action="../process_admin_setting.php" method="post">
+        <form action="halamanadmin.php?modul=admin_setting" method="post">
             <label for="harga_per_jam">Harga per Jam:</label>
             <input type="number" id="harga_per_jam" name="harga_per_jam" required><br><br>
 
+
             <label for="nama_lapangan">Pilih Lapangan:</label>
             <select id="nama_lapangan" name="nama_lapangan" required>
-                <option value="lapangan1">Siang</option>
-                <option value="lapangan2">Malam</option>
+                <option value="siang">Siang</option>
+                <option value="malam">Malam</option>
                 <!-- Tambahkan opsi lain sesuai kebutuhan -->
             </select>
 

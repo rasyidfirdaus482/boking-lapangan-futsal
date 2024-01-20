@@ -196,11 +196,7 @@ echo "$nama_hari_indo/$tanggal_baru";
             <label for="jam-selesai">Jam Selesai:</label>
             <input type="time" id="jam-selesai" name="jam_selesai" required><br><br>
 
-            <label for="jenis-lapangan">Jenis Lapangan:</label>
-            <select id="jenis-lapangan" name="jenis_lapangan" required>
-                <option value="siang">siang</option>
-                <option value="siang">malam</option>
-            </select><br><br>
+
 
             <button type="submit">Pesan Lapangan</button>
         </form>

@@ -32,6 +32,7 @@ if (strtotime("$tanggal $jamMulai") < strtotime($now)) {
         header('Location: halamanuser.php');
         exit();
     }
+
     $sql_check_booking = "SELECT COUNT(*) as total 
                      FROM bookingan 
                      WHERE tanggal = ? 

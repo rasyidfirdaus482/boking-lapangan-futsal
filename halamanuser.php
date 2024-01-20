@@ -198,8 +198,8 @@ echo "$nama_hari_indo/$tanggal_baru";
 
             <label for="jenis-lapangan">Jenis Lapangan:</label>
             <select id="jenis-lapangan" name="jenis_lapangan" required>
-                <option value="A">Lapangan A</option>
-                <option value="B">Lapangan B</option>
+                <option value="siang">siang</option>
+                <option value="siang">malam</option>
             </select><br><br>
 
             <button type="submit">Pesan Lapangan</button>

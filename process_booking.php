@@ -15,12 +15,23 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 $now = date("Y-m-d H:i:s");
 
 if (strtotime("$tanggal $jamMulai") < strtotime($now)) {
-  $_SESSION['pesan_alert'] = "Waktu pemesanan tidak valid.";
-  $_SESSION['status_pemesanan'] = 'gagal';
-  header('Location: halamanuser.php');
-  exit();
+    $_SESSION['pesan_alert'] = "Waktu pemesanan tidak valid.";
+    $_SESSION['status_pemesanan'] = 'gagal';
+    header('Location: halamanuser.php');
+    exit();
 } else {
+    // Menambahkan aturan minimal pemesanan setengah jam
+    $jamMulaiDateTime = strtotime("$tanggal $jamMulai");
+    $jamSelesaiDateTime = strtotime("$tanggal $jamSelesai");
+    $diffInMinutes = ($jamSelesaiDateTime - $jamMulaiDateTime) / 60;
 
+    // Validasi apakah selisih waktu adalah kelipatan setengah jam
+    if ($diffInMinutes < 30 || $diffInMinutes % 30 != 0) {
+        $_SESSION['pesan_alert'] = "Pemesanan harus berlangsung dalam kelipatan setengah jam.";
+        $_SESSION['status_pemesanan'] = 'gagal';
+        header('Location: halamanuser.php');
+        exit();
+    }
     $sql_check_booking = "SELECT COUNT(*) as total 
                      FROM bookingan 
                      WHERE tanggal = ? 
@@ -72,4 +83,3 @@ $total_bookings = $row['total'];
 }
 }
 $conn->close();
-

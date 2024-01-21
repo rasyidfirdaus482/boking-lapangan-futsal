@@ -36,7 +36,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 </head>
 
 <body>
-
     <div id="adminSettingContainer">
         <h1>Admin Setting</h1>
         <br>
@@ -44,17 +43,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <form action="halamanadmin.php?modul=admin_setting" method="post">
             <label for="harga_per_jam">Harga per Jam:</label>
             <input type="number" id="harga_per_jam" name="harga_per_jam" required><br><br>
-
-
             <label for="nama_lapangan">Pilih Lapangan:</label>
             <select id="nama_lapangan" name="nama_lapangan" required>
                 <option value="siang">Siang</option>
                 <option value="malam">Malam</option>
                 <!-- Tambahkan opsi lain sesuai kebutuhan -->
             </select>
-
-
-
             <button type="submit" style="width: 100%;">Simpan</button>
         </form>
     </div>
